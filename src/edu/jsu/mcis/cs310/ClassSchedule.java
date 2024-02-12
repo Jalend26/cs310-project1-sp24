@@ -2,8 +2,11 @@ package edu.jsu.mcis.cs310;
 
 import com.github.cliftonlabs.json_simple.*;
 import com.opencsv.*;
+import com.opencsv.exceptions.CsvException;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -32,15 +35,47 @@ public class ClassSchedule {
     private final String INSTRUCTOR_COL_HEADER = "instructor";
     private final String SUBJECTID_COL_HEADER = "subjectid";
     
-    public String convertCsvToJsonString(List<String[]> csv) {
+    public String convertCsvToJsonString(List<String[]> csv) throws IOException, CsvException {
         
-        return ""; // remove this!
+        StringBuilder csvFile = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(CSV_FILENAME));
+            String line;
+            while((line = br.readLine()) != null) {
+              csvFile.append(line).append('\n');
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        String csvString = csvFile.toString().trim();
         
+        CSVReader reader = new CSVReader(new StringReader(csvString));
+        List<String[]> full = reader.readAll();
+        
+        Iterator<String[]> iterator = full.iterator();
+        String[] line = iterator.next();
+        
+        for (String field : line) {
+            System.out.println(field);
+        }
+        return null;
     }
     
     public String convertJsonToCsvString(JsonObject json) {
         
-        return ""; // remove this!
+        List<String[]> full;
+        Iterator<String[]> iterator = full.iterator();
+        
+        JsonArray records = new JsonArray();
+        
+        if (iterator.hasNext()) {
+            String[] headings = iterator.next();
+            while (iterator.hasNext()6)
+        }
+        
+        
+        return null; // remove this!
         
     }
     
@@ -66,7 +101,7 @@ public class ClassSchedule {
     
     public List<String[]> getCsv() {
         
-        List<String[]> csv = getCsv(getInputFileData(CSV_FILENAME));
+        List<String[]> csv = getCsv(getInputFileData(JSON_FILENAME));
         return csv;
         
     }
